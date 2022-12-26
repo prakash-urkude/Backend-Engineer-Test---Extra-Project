@@ -1,14 +1,14 @@
 const mongoose = require("mongoose")
 
 const customerSchema = new mongoose.Schema({
-firstName :{type:string},
-lastName:{type: string},
-mobileNumber:{type: string },     //10 digits long
+firstName :{type:String},
+lastName:{type: String},
+mobileNumber:{type: String },     //10 digits long
 DOB :{type:Date},
-emailID:{ type:string},               //abc@xyz.com
-address:{ type:string},
-customerID:{type: string},              // UUID
-status:{ type:string,enum:['ACTIVE','INACTIVE'] }
+emailID:{ type:String},               //abc@xyz.com
+address:{ type:String},
+customerID:{type: String},              // UUID
+status:{ type:String,enum:['ACTIVE','INACTIVE'] }
 },{timestamps:true})
 
 

@@ -1,37 +1,37 @@
-const customerModel = require("../model/CustomerModel");
-const cardModel = require('../model/cardModel')
-const validation = require('../validator/validation.js')
+const customerModel = require("../model/customerModel");
+//const validation = require('../validator/validator.js')
+const {isValid,isValidDate,isValidEmail,isValidNumber} = require('../validator/validator')
 
 const createNewCustomer = async function(req,res){
     try{
     const data = req.body
     if(Object.keys(data) == 0)return res.status(400).send({status:false,msg:"please provide data"})
-    let {firstName,lastName,mobileNumber,DOB,emailID,address,status}=data
+    const{firstName,lastName,mobileNumber,DOB,emailID,address,status}=data
 
-    if(firstName)return res.status(400).send({ status: false, message: "firstName is required" });
-    if(!validation.isValid(firstName)) return res.status(400).send({ status: false, message: "please provide valid firstName" });
+    if(!firstName)return res.status(400).send({ status: false, message: "firstName is required" });
+    if(!isValid(firstName)) return res.status(400).send({ status: false, message: "please provide valid firstName" });
 
     if(lastName)return res.status(400).send({ status: false, message: "lastName is required" });
-    if(!validation.isValid(lastName)) return res.status(400).send({ status: false, message: "please provide valid lastName" });
+    if(!isValid(lastName)) return res.status(400).send({ status: false, message: "please provide valid lastName" });
 
-    if(mobileNumber)return res.status(400).send({ status: false, message: "mobileNumber is required" });
-    if(!validation.isValidNumber(mobileNumber)) return res.status(400).send({ status: false, message: "please provide valid mobileNumber" });
+    if(!mobileNumber)return res.status(400).send({ status: false, message: "mobileNumber is required" });
+    if(!isValidNumber(mobileNumber)) return res.status(400).send({ status: false, message: "please provide valid mobileNumber" });
     const findMobile = await customerModel.findOne({ mobileNumber: mobileNumber })
     if (findMobile) return res.status(400).send({ status: false, message: "mobilNumber is already present" })
 
-    if(DOB)return res.status(400).send({ status: false, message: "DOB is required" });
-    if(!validation.isValidDate(DOB)) return res.status(400).send({ status: false, message: "please provide valid DOB like:-MM-DD-YYYY" });
+    if(!DOB)return res.status(400).send({ status: false, message: "DOB is required" });
+    if(!isValidDate(DOB)) return res.status(400).send({ status: false, message: "please provide valid DOB like:-MM-DD-YYYY" });
 
-    if(emailID)return res.status(400).send({ status: false, message: "emailID is required" });
-    if(!validation.isValidEmail(emailID)) return res.status(400).send({ status: false, message: "please provide valid emailID" });
+    if(!emailID)return res.status(400).send({ status: false, message: "emailID is required" });
+    if(!isValidEmail(emailID)) return res.status(400).send({ status: false, message: "please provide valid emailID" });
 
-    if(address)return res.status(400).send({ status: false, message: "firstName is required" });
-    if(!validation.isValid(address)) return res.status(400).send({ status: false, message: "please provide valid address" });
+    if(!address)return res.status(400).send({ status: false, message: "firstName is required" });
+    if(!isValid(address)) return res.status(400).send({ status: false, message: "please provide valid address" });
 
     const customerID = uuid.v4()
     data.customerID = customerID
 
-    if(status)return res.status(400).send({ status: false, message: "status is required" });
+    if(!status)return res.status(400).send({ status: false, message: "status is required" });
     if(!['ACTIVE','INACTIVE'].includes(status)) return res.status(400).send({ status: false, message: "status can be ACTIVE/INACTIVE" });
 
      const saveData = await customerModel.create(data)
